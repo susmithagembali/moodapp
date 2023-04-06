@@ -5,13 +5,13 @@ import kotlin.concurrent.timer
 class emotion {
     private var emotion: String = ""
     private var comment: String = ""
-    private var time: String = ""
+    private var formatted: String = ""
 
     constructor()
-    constructor(emotion: String, comment: String ,time: String) {
+    constructor(emotion: String, comment: String ,formatted: String) {
         this.emotion = emotion
         this.comment = comment
-        this.time = time
+        this.formatted = formatted
     }
     fun getEmotion():String?{
         return emotion
@@ -26,10 +26,10 @@ class emotion {
     fun setComment(comment: String){
         this.comment = comment
     }
-    fun getTime():String?{
-        return time
+    fun getFormatted():String?{
+        return formatted
     }
-    fun setTime(time:String){
-        this.time = time
+    fun setFormatted(formatted:String){
+        this.formatted = formatted
     }
 }

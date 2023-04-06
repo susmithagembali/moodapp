@@ -1,6 +1,7 @@
 package com.example.moodapp
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,13 +19,18 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var scomment:String
     lateinit var sEmotion:String
     lateinit var storage:DatabaseReference
-    private var firebaseUserId:String = ""
+    lateinit var history:ImageButton
+    //private var firebaseUserId:String = ""
     lateinit var auth: FirebaseAuth
     private var random:java.util.Random =java.util.Random()
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
+        history=findViewById(R.id.button)
+        history.setOnClickListener {
+            startActivity(Intent(this,history::class.java))
+        }
         img=findViewById(R.id.image2)
        img.setOnClickListener {
            ClickEmotion()
@@ -32,6 +38,7 @@ class MainActivity2 : AppCompatActivity() {
         but4=findViewById(R.id.button4)
         but4.setOnClickListener {
            showcommentdailogue()
+
         }
     }
 
@@ -39,7 +46,7 @@ class MainActivity2 : AppCompatActivity() {
     private fun showcommentdailogue() {
         val showcomment = Dialog(this)
         showcomment.setContentView(R.layout.comment_dailogue)
-        showcomment.setCancelable(false)
+       // showcomment.setCancelable(false)
         showcomment.setCanceledOnTouchOutside(false)
         showcomment.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         val emmotion = showcomment.findViewById<EditText>(R.id.emotion)
@@ -66,10 +73,10 @@ class MainActivity2 : AppCompatActivity() {
     }
 
     private fun sendData(sEmotion: String, scomment: String, formatted: String) {
-           firebaseUserId=auth.currentUser!!.uid
-           storage= FirebaseDatabase.getInstance().reference.child("History").child(formatted)
+           //firebaseUserId=auth.currentUser!!.uid
+           storage= FirebaseDatabase.getInstance().reference.child("History").child(formatted.substring(0,2))
         val userHashMap=HashMap<String,Any>()
-        userHashMap["date"]=formatted
+        userHashMap["formatted"]=formatted
         userHashMap["emotion"]=sEmotion
         userHashMap["comment"]=scomment
         storage.updateChildren(userHashMap).addOnCompleteListener {

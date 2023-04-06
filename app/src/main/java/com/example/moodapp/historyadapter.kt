@@ -10,7 +10,7 @@ class historyadapter( val his: com.example.moodapp.history,val historylist: Arra
     class history(view: View):RecyclerView.ViewHolder(view){
         val emotion: TextView = view.findViewById(R.id.emotion1)
         val comment: TextView = view.findViewById(R.id.comment1)
-        val timestamp: TextView = view.findViewById(R.id.timestamp)
+        val formatted: TextView = view.findViewById(R.id.timestamp)
 
     }
 
@@ -23,7 +23,7 @@ class historyadapter( val his: com.example.moodapp.history,val historylist: Arra
         var hmodel: emotion = historylist[position]
         holder.emotion.text = hmodel.getEmotion()
         holder.comment.text = hmodel.getComment()
-        holder.timestamp.text = hmodel.getTime()
+        holder.formatted.text = hmodel.getFormatted()
     }
 
     override fun getItemCount(): Int {

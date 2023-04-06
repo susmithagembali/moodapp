@@ -21,8 +21,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
-        android:src="@drawable/his"
-         />
+        android:src="@drawable/his" />
 
     <ImageButton
         android:id="@+id/button4"
