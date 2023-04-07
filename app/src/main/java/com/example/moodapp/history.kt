@@ -29,9 +29,9 @@ class history : AppCompatActivity() {
         recycle.adapter=hiss
         databasestrg.child("History").child(formatted.substring(0,2)).addValueEventListener(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-              // historylist.clear()
+               historylist.clear()
                for (postSnapShot in snapshot.children) {
-                   val currentUser=postSnapShot.getValue(emotion::class.java)
+                   historylist.add(snapshot.getValue().toString() as emotion)
                }
                 hiss.notifyDataSetChanged()
             }
