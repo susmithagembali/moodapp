@@ -3,41 +3,55 @@ package com.example.moodapp
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
-class history : AppCompatActivity() {
+class HistoryActivity : AppCompatActivity() {
     lateinit var hiss: historyadapter
     lateinit var historylist: ArrayList<emotion>
     lateinit var manager: RecyclerView.LayoutManager
     lateinit var recycle: RecyclerView
     lateinit var databasestrg:DatabaseReference
+    lateinit var info:emotion
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
+
+//        val current = LocalDateTime.now()
+//        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+//        val formatted = current.format(formatter)
+
+        historylist = ArrayList()
+        hiss =historyadapter(this,historylist)
+
         recycle = findViewById(R.id.history)
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val formatted = current.format(formatter)
-        databasestrg=FirebaseDatabase.getInstance().reference
-        recycle.layoutManager=LinearLayoutManager(this)
+        recycle.layoutManager= LinearLayoutManager(this)
+        recycle.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
         recycle.adapter=hiss
-        databasestrg.child("History").child(formatted.substring(0,2)).addValueEventListener(object :ValueEventListener{
+
+        databasestrg=FirebaseDatabase.getInstance().reference
+
+        databasestrg.child("History").addValueEventListener(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                historylist.clear()
                for (postSnapShot in snapshot.children) {
-                   historylist.add(snapshot.getValue().toString() as emotion)
+//                   info = snapshot.getValue(emotion::class.java)!!
+                   val hmodel =postSnapShot.getValue(emotion::class.java)
+
+                   historylist.add(hmodel!!)
+//                   val history = snapshot.getValue(emotion::class.java)
+//                historylist.add(snapshot.getValue().toString() as emotion)
                }
                 hiss.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                Toast.makeText(this@HistoryActivity,"Data Not fetched",Toast.LENGTH_SHORT).show()
             }
 
         })

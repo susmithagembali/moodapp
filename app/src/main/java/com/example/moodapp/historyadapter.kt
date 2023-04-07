@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class historyadapter( val his: com.example.moodapp.history,val historylist: ArrayList<emotion>) :RecyclerView.Adapter<historyadapter.history>() {
+class historyadapter(val his: com.example.moodapp.HistoryActivity, val historylist: ArrayList<emotion>) :RecyclerView.Adapter<historyadapter.history>() {
     class history(view: View):RecyclerView.ViewHolder(view){
         val emotion: TextView = view.findViewById(R.id.emotion1)
         val comment: TextView = view.findViewById(R.id.comment1)
-        val formatted: TextView = view.findViewById(R.id.timestamp)
+        val day: TextView = view.findViewById(R.id.timestamp)
 
     }
 
@@ -23,7 +23,7 @@ class historyadapter( val his: com.example.moodapp.history,val historylist: Arra
         var hmodel: emotion = historylist[position]
         holder.emotion.text = hmodel.getEmotion()
         holder.comment.text = hmodel.getComment()
-        holder.formatted.text = hmodel.getFormatted()
+        holder.day.text = hmodel.getDay()
     }
 
     override fun getItemCount(): Int {

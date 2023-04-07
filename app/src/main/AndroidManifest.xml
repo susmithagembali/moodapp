@@ -10,10 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoodApp">
         <activity
-            android:name=".history"
-            android:exported="false" />
-        <activity
-            android:name=".comment"
+            android:name=".HistoryActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity2"

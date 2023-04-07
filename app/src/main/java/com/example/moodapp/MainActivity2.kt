@@ -3,10 +3,10 @@ package com.example.moodapp
 import android.app.Dialog
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -18,9 +18,9 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var but4:ImageButton
     lateinit var scomment:String
     lateinit var sEmotion:String
+    lateinit var sDay:String
     lateinit var storage:DatabaseReference
     lateinit var history:ImageButton
-    //private var firebaseUserId:String = ""
     lateinit var auth: FirebaseAuth
     private var random:java.util.Random =java.util.Random()
     @RequiresApi(Build.VERSION_CODES.O)
@@ -28,9 +28,6 @@ class MainActivity2 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
         history=findViewById(R.id.button)
-        history.setOnClickListener {
-            startActivity(Intent(this,history::class.java))
-        }
         img=findViewById(R.id.image2)
        img.setOnClickListener {
            ClickEmotion()
@@ -39,6 +36,11 @@ class MainActivity2 : AppCompatActivity() {
         but4.setOnClickListener {
            showcommentdailogue()
 
+        }
+
+        history.setOnClickListener {
+            val i = Intent(this,HistoryActivity::class.java)
+            startActivity(i)
         }
     }
 
@@ -51,20 +53,26 @@ class MainActivity2 : AppCompatActivity() {
         showcomment.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         val emmotion = showcomment.findViewById<EditText>(R.id.emotion)
         val comment= showcomment.findViewById<EditText>(R.id.comment)
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val formatted = current.format(formatter)
+        val day = showcomment.findViewById<EditText>(R.id.etDay)
+//        val current = LocalDateTime.now()
+//        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+//        val formatted = current.format(formatter)
+
         showcomment.findViewById<Button>(R.id.showbutton).setOnClickListener {
           scomment=comment.text.toString().trim { it <= ' ' }
             sEmotion=emmotion.text.toString().trim { it <= ' '}
+            sDay = day.text.toString().trim { it <= ' ' }
+//            format = formatted.toString()
             if (sEmotion.isEmpty()){
                 Toast.makeText(this,"enter your emotion",Toast.LENGTH_SHORT).show()
             }
             else if (scomment.isEmpty()){
                 Toast.makeText(this,"enter your comment",Toast.LENGTH_SHORT).show()
+            } else if (sDay.isEmpty()) {
+                Toast.makeText(this, "enter the day", Toast.LENGTH_SHORT).show()
             }
             else{
-                sendData(sEmotion,scomment,formatted)
+                sendData(sEmotion,scomment,sDay)
             }
         }
 
@@ -72,11 +80,11 @@ class MainActivity2 : AppCompatActivity() {
         showcomment.show()
     }
 
-    private fun sendData(sEmotion: String, scomment: String, formatted: String) {
-           //firebaseUserId=auth.currentUser!!.uid
-           storage= FirebaseDatabase.getInstance().reference.child("History").child(formatted.substring(0,2))
+    private fun sendData(sEmotion: String, scomment: String,sDay: String) {
+           storage= FirebaseDatabase.getInstance().reference.child("History").child(sDay)
         val userHashMap=HashMap<String,Any>()
-        userHashMap["formatted"]=formatted
+        userHashMap["day"] = sDay
+//        userHashMap["formatted"]=formatted
         userHashMap["emotion"]=sEmotion
         userHashMap["comment"]=scomment
         storage.updateChildren(userHashMap).addOnCompleteListener {
