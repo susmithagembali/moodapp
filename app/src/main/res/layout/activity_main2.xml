@@ -30,8 +30,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
-        android:src="@drawable/comment"
-        />
+        android:src="@drawable/comment" />
 
 
 
